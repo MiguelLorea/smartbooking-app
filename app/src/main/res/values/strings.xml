@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SmartBooking</string>
+    <string name="logo">Logo de SmartBooking</string>
+    <string name="usuario_o_email">Usuario o email</string>
+    <string name="usuario">Usuario</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="repetir_contrasena">Repetir contraseña</string>
+    <string name="entrar">Entrar</string>
+    <string name="crear_cuenta">Crear cuenta</string>
+    <string name="email">Email</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="home_ayuda">Reservas de la sala del coworking.</string>
+    <string name="mis_reservas">Mis reservas</string>
+    <string name="nueva_reserva">Nueva reserva</string>
+    <string name="mi_perfil">Mi perfil</string>
+    <string name="usuarios">Usuarios</string>
+    <string name="la_sala">La sala</string>
+    <string name="contacto">Contacto</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
+    <string name="sin_reservas">No hay reservas</string>
+    <string name="sin_usuarios">No hay usuarios</string>
+    <string name="fecha">Fecha</string>
+    <string name="hora_inicio">Hora de inicio</string>
+    <string name="hora_fin">Hora de fin</string>
+    <string name="motivo">Motivo</string>
+    <string name="guardar">Guardar</string>
+    <string name="editar">Editar</string>
+    <string name="cancelar_reserva">Cancelar reserva</string>
+    <string name="cambiar_rol">Cambiar rol</string>
+    <string name="activar">Activar</string>
+    <string name="sala_titulo">Sala principal</string>
+    <string name="sala_texto">Una sola sala, con mesa grande y wifi. El horario se reserva desde la app y queda guardado en el servidor.</string>
+    <string name="contacto_nombre">SmartBooking Coworking</string>
+    <string name="contacto_dir">Av. Corrientes 1234, CABA</string>
+    <string name="contacto_mail">hola@smartbooking.local</string>
+    <string name="contacto_tel">+54 11 4321-0000</string>
+    <string name="contacto_mapa">Ver en el mapa</string>
+</resources>
