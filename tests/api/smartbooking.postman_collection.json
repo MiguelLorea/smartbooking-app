@@ -1,0 +1,172 @@
+{
+  "info": {
+    "name": "SmartBooking API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "baseUrl", "value": "http://127.0.0.1:8000"},
+    {"key": "access", "value": ""},
+    {"key": "accessUser", "value": ""},
+    {"key": "refresh", "value": ""},
+    {"key": "reservaAdmin", "value": ""},
+    {"key": "fecha", "value": ""}
+  ],
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "AUT-API-02 registro password debil",
+          "request": {
+            "auth": {"type": "noauth"},
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"username\":\"debil\",\"email\":\"debil@test.com\",\"password\":\"12345678\",\"first_name\":\"A\",\"last_name\":\"B\"}"},
+            "url": "{{baseUrl}}/api/auth/register/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('AUT-API-02 password debil devuelve 400', function () {", "  pm.response.to.have.status(400);", "});"]}}]
+        },
+        {
+          "name": "login incorrecto",
+          "request": {
+            "auth": {"type": "noauth"},
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"username\":\"admin\",\"password\":\"clave-mala-XYZ!\"}"},
+            "url": "{{baseUrl}}/api/auth/login/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('login mal devuelve 401', function () { pm.response.to.have.status(401); });"]}}]
+        },
+        {
+          "name": "AUT-API-01 login admin",
+          "request": {
+            "auth": {"type": "noauth"},
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"username\":\"admin\",\"password\":\"Admin123!\"}"},
+            "url": "{{baseUrl}}/api/auth/login/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('AUT-API-01 login ok', function () {", "  pm.response.to.have.status(200);", "  var data = pm.response.json();", "  pm.expect(data.access).to.be.a('string');", "  pm.collectionVariables.set('access', data.access);", "  pm.collectionVariables.set('refresh', data.refresh);", "});"]}}]
+        },
+        {
+          "name": "refresh",
+          "request": {
+            "auth": {"type": "noauth"},
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"refresh\":\"{{refresh}}\"}"},
+            "url": "{{baseUrl}}/api/auth/refresh/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('refresh devuelve access', function () {", "  pm.response.to.have.status(200);", "  pm.collectionVariables.set('access', pm.response.json().access);", "});"]}}]
+        },
+        {
+          "name": "AUT-API-03 sin token",
+          "request": {
+            "auth": {"type": "noauth"},
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/reservas/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('AUT-API-03 sin token devuelve 401', function () { pm.response.to.have.status(401); });"]}}]
+        },
+        {
+          "name": "login usuario",
+          "request": {
+            "auth": {"type": "noauth"},
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"username\":\"usuario\",\"password\":\"Usuario123!\"}"},
+            "url": "{{baseUrl}}/api/auth/login/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('login usuario', function () {", "  pm.response.to.have.status(200);", "  pm.collectionVariables.set('accessUser', pm.response.json().access);", "});"]}}]
+        }
+      ]
+    },
+    {
+      "name": "reservas",
+      "item": [
+        {
+          "name": "listar como admin",
+          "request": {
+            "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{access}}", "type": "string"}]},
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/reservas/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('el admin lista reservas', function () { pm.response.to.have.status(200); });"]}}]
+        },
+        {
+          "name": "crear reserva",
+          "event": [
+            {"listen": "prerequest", "script": {"type": "text/javascript", "exec": ["var ahora = new Date();", "var extra = 80 + (ahora.getTime() % 900);", "var dia = new Date(ahora.getTime() + extra * 86400000);", "function dos(n){ return (n < 10 ? '0' : '') + n; }", "pm.collectionVariables.set('fecha', dia.getFullYear() + '-' + dos(dia.getMonth() + 1) + '-' + dos(dia.getDate()));"]}},
+            {"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('crea la reserva', function () {", "  pm.response.to.have.status(201);", "  pm.collectionVariables.set('reservaAdmin', pm.response.json().id);", "});"]}}
+          ],
+          "request": {
+            "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{access}}", "type": "string"}]},
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"fecha\":\"{{fecha}}\",\"hora_inicio\":\"10:00\",\"hora_fin\":\"11:00\",\"motivo\":\"desde postman\"}"},
+            "url": "{{baseUrl}}/api/reservas/"
+          }
+        },
+        {
+          "name": "AUT-API-04 solape",
+          "request": {
+            "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{accessUser}}", "type": "string"}]},
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"fecha\":\"{{fecha}}\",\"hora_inicio\":\"10:30\",\"hora_fin\":\"11:30\",\"motivo\":\"solape\"}"},
+            "url": "{{baseUrl}}/api/reservas/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('AUT-API-04 no deja superponer', function () { pm.response.to.have.status(400); });"]}}]
+        },
+        {
+          "name": "hora fin anterior",
+          "request": {
+            "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{access}}", "type": "string"}]},
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\"fecha\":\"{{fecha}}\",\"hora_inicio\":\"16:00\",\"hora_fin\":\"15:00\",\"motivo\":\"mal\"}"},
+            "url": "{{baseUrl}}/api/reservas/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('RN03 hora fin', function () { pm.response.to.have.status(400); });"]}}]
+        },
+        {
+          "name": "AUT-API-05 reserva de otro",
+          "request": {
+            "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{accessUser}}", "type": "string"}]},
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/reservas/{{reservaAdmin}}/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('AUT-API-05 no ve la reserva del admin', function () { pm.response.to.have.status(404); });"]}}]
+        }
+      ]
+    },
+    {
+      "name": "usuarios",
+      "item": [
+        {
+          "name": "admin lista usuarios",
+          "request": {
+            "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{access}}", "type": "string"}]},
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/usuarios/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('admin ve usuarios', function () { pm.response.to.have.status(200); });"]}}]
+        },
+        {
+          "name": "usuario no administra",
+          "request": {
+            "auth": {"type": "bearer", "bearer": [{"key": "token", "value": "{{accessUser}}", "type": "string"}]},
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/usuarios/"
+          },
+          "event": [{"listen": "test", "script": {"type": "text/javascript", "exec": ["pm.test('usuario recibe 403', function () { pm.response.to.have.status(403); });"]}}]
+        }
+      ]
+    }
+  ]
+}

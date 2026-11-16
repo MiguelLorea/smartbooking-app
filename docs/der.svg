@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="280">
+  <rect width="760" height="280" fill="#f3f6f8"/>
+  <rect x="40" y="30" width="280" height="210" fill="#fff" stroke="#1565C0" stroke-width="2"/>
+  <text x="60" y="58" font-family="sans-serif" font-size="18" fill="#0D47A1">USUARIO</text>
+  <text x="60" y="90" font-family="sans-serif" font-size="14">id PK</text>
+  <text x="60" y="114" font-family="sans-serif" font-size="14">username</text>
+  <text x="60" y="138" font-family="sans-serif" font-size="14">email</text>
+  <text x="60" y="162" font-family="sans-serif" font-size="14">password</text>
+  <text x="60" y="186" font-family="sans-serif" font-size="14">rol</text>
+  <text x="60" y="210" font-family="sans-serif" font-size="14">is_active</text>
+  <rect x="440" y="30" width="280" height="210" fill="#fff" stroke="#1565C0" stroke-width="2"/>
+  <text x="460" y="58" font-family="sans-serif" font-size="18" fill="#0D47A1">RESERVA</text>
+  <text x="460" y="90" font-family="sans-serif" font-size="14">id PK</text>
+  <text x="460" y="114" font-family="sans-serif" font-size="14">usuario_id FK</text>
+  <text x="460" y="138" font-family="sans-serif" font-size="14">fecha</text>
+  <text x="460" y="162" font-family="sans-serif" font-size="14">hora_inicio</text>
+  <text x="460" y="186" font-family="sans-serif" font-size="14">hora_fin</text>
+  <text x="460" y="210" font-family="sans-serif" font-size="14">motivo</text>
+  <line x1="320" y1="120" x2="440" y2="120" stroke="#0D47A1" stroke-width="2"/>
+  <text x="345" y="110" font-family="sans-serif" font-size="13">1</text>
+  <text x="420" y="110" font-family="sans-serif" font-size="13">N</text>
+</svg>
