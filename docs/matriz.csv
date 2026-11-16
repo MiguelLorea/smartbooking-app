@@ -1,0 +1,7 @@
+Historia,Caso,Test automatico
+US01 registro y login,TC01 TC02 TC12,AUT-API-01 AUT-API-02 AUT-UNIT-01
+US02 perfil,TC11,manual
+US03 crear reserva,TC04 TC05 TC06 TC07,AUT-API-04 ValidadoresTest
+US04 ver y cancelar,TC08 TC10,AUT-API-05
+US05 admin,TC09,Postman usuario no administra
+US06 sala y contacto,TC13,ACC-01

@@ -1,0 +1,14 @@
+ID,Titulo,Precondiciones,Pasos,Datos,Resultado esperado,Resultado obtenido,Estado,Tipo,Capa,Automatizable,Herramienta
+TC01,Login correcto,Existe el usuario admin,POST /api/auth/login/,admin / Admin123!,200 y vienen access y refresh,pasa con Newman y con manage.py test,pasa,funcional,API externa,Si,Postman AUT-API-01
+TC02,Registro con clave debil,ninguna,POST /api/auth/register/,password 12345678,400 y no crea el usuario,pasa,pasa,seguridad,API externa,Si,Postman AUT-API-02
+TC03,Pedir reservas sin token,ninguna,GET /api/reservas/ sin header, ,401,pasa,pasa,seguridad,API externa,Si,Postman AUT-API-03
+TC04,Crear reserva valida,usuario logueado y franja libre,POST /api/reservas/,fecha futura 10:00 a 11:00,201 y aparece en el listado,pasa con Newman,pasa,funcional,API externa,Si,Postman crear reserva
+TC05,No superponer franja,ya hay una reserva ese dia a las 10,POST otra de 10:30 a 11:30,misma fecha,400 y no se guarda,pasa,pasa,negativa,API externa,Si,Postman AUT-API-04
+TC06,Hora fin anterior a la de inicio,usuario logueado,POST con 16:00 y 15:00,fecha futura,400,pasa,pasa,negativa,unitaria local y API,Si,ValidadoresTest y Postman
+TC07,No reservar en el pasado,ninguna,validar fecha 2000-01-01,2000-01-01 10:00,la validacion local lo rechaza,pasa en ValidadoresTest,pasa,negativa,unitaria local,Si,ValidadoresTest#noReservaEnElPasado
+TC08,Usuario no ve reserva ajena,hay una reserva del admin,GET /api/reservas/{id}/ con token de usuario,id de la reserva del admin,404,pasa,pasa,seguridad,API externa,Si,Postman AUT-API-05
+TC09,Usuario no lista usuarios,token de usuario,GET /api/usuarios/, ,403,pasa,pasa,negativa,API externa,Si,Postman usuario no administra
+TC10,Cancelar pide confirmacion,reserva propia abierta en el detalle,tocar Cancelar reserva, ,aparece un dialogo antes de borrar,no lo corri en el emulador; el dialogo esta en ReservaDetalleActivity,pendiente,funcional,UI,No,a mano en la defensa. Espresso salia mas caro que probarlo un par de veces
+TC11,Login muestra error si falta la clave,pantalla de login,tocar Entrar con la clave vacia,usuario admin y clave vacia,el campo marca el error,no lo corri en el emulador; el setError esta en LoginActivity,pendiente,funcional,UI,No,a mano
+TC12,Password valida en la app,ninguna,Validadores.password,Usuario123!,devuelve null (esta bien),pasa gradlew test,pasa,funcional,unitaria local,Si,ValidadoresTest#aceptaPassword
+TC13,TalkBack en login y alta,TalkBack activado,recorrer login inicio y formulario, ,anuncia los campos en orden y con nombre,revision de layouts hecha; falta confirmarlo con TalkBack en el dispositivo. La imagen de la sala no tiene descripcion,pendiente,accesibilidad,UI,No,ACC-01 a mano
