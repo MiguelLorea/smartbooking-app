@@ -1,0 +1,51 @@
+plugins {
+    id "com.android.application"
+}
+
+def props = new Properties()
+def local = rootProject.file("local.properties")
+if (local.exists()) {
+    local.withInputStream { props.load(it) }
+}
+def apiUrl = props.getProperty("API_BASE_URL", "http://10.0.2.2:8000/")
+
+android {
+    namespace "com.smartbooking.app"
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.smartbooking.app"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+        buildConfigField "String", "API_BASE_URL", "\"${apiUrl}\""
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:1.6.1"
+    implementation "com.google.android.material:material:1.11.0"
+    implementation "androidx.recyclerview:recyclerview:1.3.2"
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation "com.squareup.okhttp3:okhttp:4.12.0"
+    implementation "androidx.security:security-crypto:1.0.0"
+    testImplementation "junit:junit:4.13.2"
+}
